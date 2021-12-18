@@ -31,10 +31,15 @@ extern uint32          vga_index;
 static uint32          line_index;
 extern uint8           back_color;
 extern uint8           fore_color;
+extern uint8           cursor_y;
+extern uint8           cursor_x;
 
-void    clear_vga_buffer(uint16 **buffer);
+void    clear_vga_buffer(void);
 void    new_line(void);
 void    putchar(char c);
 uint32  putstr(char *s);
+uint8   inb(uint16 port);
+void    outb(uint16 port, uint8 data);
+void    move_cursor(uint8 y, uint8 x);
 
 #endif

@@ -7,6 +7,8 @@ uint32 vga_index = 0;
 static uint32 line_index = 0;
 uint8 back_color = BLACK;
 uint8 fore_color = WHITE;
+uint8 cursor_y = 0;
+uint8 cursor_x = 0;
 
 int     main(void)
 {
