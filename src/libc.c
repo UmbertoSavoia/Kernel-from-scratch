@@ -11,7 +11,7 @@ int     tolower(int c)
     return (('A' <= c && c <= 'Z') ? (c + 32) : c);
 }
 
-char    *strnstr(const char *s1, const char *s2, size_t len)
+char    *strnstr(const char *s1, const char *s2, uint32 len)
 {
     uint32 l2;
 
@@ -30,7 +30,7 @@ char    *strnstr(const char *s1, const char *s2, size_t len)
     return (0);
 }
 
-void    *memset(void *s, int c, size_t n)
+void    *memset(void *s, int c, uint32 n)
 {
     char *temp;
 
@@ -40,7 +40,7 @@ void    *memset(void *s, int c, size_t n)
     return (s);
 }
 
-void    *memmove(void *dest, const void *src, size_t n)
+void    *memmove(void *dest, const void *src, uint32 n)
 {
     char        *tmp;
     const char  *s;
@@ -66,7 +66,7 @@ void    *memmove(void *dest, const void *src, size_t n)
     return (dest);
 }
 
-void    *memcpy(void *dest, const void *src, size_t n)
+void    *memcpy(void *dest, const void *src, uint32 n)
 {
     char        *temp;
     const char  *s;
@@ -80,7 +80,7 @@ void    *memcpy(void *dest, const void *src, size_t n)
     return (dest);
 }
 
-int     memcmp(const void *s1, const void *s2, size_t n)
+int     memcmp(const void *s1, const void *s2, uint32 n)
 {
     const unsigned char *su1;
     const unsigned char *su2;
@@ -100,7 +100,7 @@ int     memcmp(const void *s1, const void *s2, size_t n)
     return (ret);
 }
 
-void    *memchr(const void *s, int c, size_t n)
+void    *memchr(const void *s, int c, uint32 n)
 {
     const unsigned char	*temp;
 
@@ -114,7 +114,7 @@ void    *memchr(const void *s, int c, size_t n)
     return (0);
 }
 
-void    *memccpy(void *dest, const void *src, int c, size_t n)
+void    *memccpy(void *dest, const void *src, int c, uint32 n)
 {
     while (n--)
     {
@@ -151,7 +151,7 @@ int     isalnum(int c)
     return (isalpha(c) || isdigit(c));
 }
 
-void    bzero(void *s, size_t n)
+void    bzero(void *s, uint32 n)
 {
     while (n--)
         *(char*)s++ = 0;

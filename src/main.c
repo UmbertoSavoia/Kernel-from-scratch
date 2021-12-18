@@ -20,5 +20,4 @@ int     main(void)
 
     new_line();
     fore_color = WHITE;
-    printf("Ciao da printf, %c, %s, %d, %d, %x, %u, %c", 'h', "ciao 2", 42, -42, 33, 49, '(');
 }
