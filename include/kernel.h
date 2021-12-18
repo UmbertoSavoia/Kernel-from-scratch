@@ -35,6 +35,6 @@ extern uint8           fore_color;
 void    clear_vga_buffer(uint16 **buffer);
 void    new_line(void);
 void    putchar(char c);
-void    putstr(char *s);
+uint32  putstr(char *s);
 
 #endif

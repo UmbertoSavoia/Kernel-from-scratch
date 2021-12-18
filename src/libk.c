@@ -26,10 +26,12 @@ void    putchar(char c)
         new_line();
 }
 
-void    putstr(char *s)
+uint32  putstr(char *s)
 {
-    while (*s) {
+    uint32 ret = 0;
+
+    for (ret = 0; *s; ++s, ++ret) {
         putchar(*s);
-        ++s;
     }
+    return ret;
 }

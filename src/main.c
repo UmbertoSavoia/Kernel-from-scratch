@@ -1,4 +1,5 @@
 #include "../include/kernel.h"
+#include "../include/libc.h"
 
 const uint32 BUF_SIZE = 2200;
 uint16 *vga_buffer = 0;
@@ -16,4 +17,8 @@ int     main(void)
     fore_color = RED;
     new_line();
     putstr("KFS - Umberto Savoia");
+
+    new_line();
+    fore_color = WHITE;
+    printf("Ciao da printf, %c, %s, %d, %d, %x, %u, %c", 'h', "ciao 2", 42, -42, 33, 49, '(');
 }

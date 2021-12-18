@@ -41,4 +41,8 @@ fclean: clean
 
 re: fclean all
 
+run:
+	yes | cp -iv kfs.iso /mnt/c/Users/umber/Desktop/.
+	/mnt/c/Program\ Files/qemu/qemu-system-x86_64.exe -cdrom "C:\Users\umber\Desktop\kfs.iso"
+
 .PHONY: all clean fclean re
