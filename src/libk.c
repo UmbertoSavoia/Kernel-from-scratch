@@ -19,6 +19,11 @@ void    putchar(char c)
 {
     uint8 color = 0;
 
+    if (c == '\n') {
+        new_line();
+        return ;
+    }
+
     color = (back_color << 4) | fore_color;
     vga_buffer[line_index * 80 + vga_index] = (color << 8) | c;
     vga_index++;
