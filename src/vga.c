@@ -1,18 +1,5 @@
 #include "../include/kernel.h"
 
-uint8   inb(uint16 port)
-{
-    uint8 ret = 0;
-
-    asm volatile("inb %1, %0" : "=a"(ret) : "Nd"(port));
-    return ret;
-}
-
-void    outb(uint16 port, uint8 data)
-{
-    asm volatile ("outb %0, %1"::"a"(data), "Nd"(port));
-}
-
 void    move_cursor(uint8 y, uint8 x)
 {
     uint16 pos = y * 80 + x;
@@ -65,4 +52,3 @@ uint32  putstr(char *s)
     }
     return ret;
 }
-
