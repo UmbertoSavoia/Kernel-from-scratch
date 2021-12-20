@@ -10,6 +10,12 @@ uint8 fore_color = WHITE;
 uint8 cursor_y = 0;
 uint8 cursor_x = 0;
 
+void    shutdown(void)
+{
+    outw(0x604, 0x2000); // QEMU
+    // outw(0x4004, 0x3400); // Virtualbox
+}
+
 int     main(void)
 {
     vga_buffer = (uint16 *)VGA_ADDRESS;
@@ -22,6 +28,9 @@ int     main(void)
 
     new_line();
     fore_color = WHITE;
+
+    if (init_controller_ps2() != 0)
+        return 1;
 
     uint32 code = 0, tmp = 0;
     while(1) {
