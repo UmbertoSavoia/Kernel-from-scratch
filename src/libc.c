@@ -199,6 +199,30 @@ void    itoa(int num, int base_len, char *str)
     }
 }
 
+int     atoi(const char *str)
+{
+    int ret;
+    int neg;
+
+    ret = 0;
+    neg = 1;
+    while (*str == '\n' || *str == '\t' || *str == ' '
+           || *str == '\v' || *str == '\r' || *str == '\f')
+        str++;
+    if (*str == '+' || *str == '-')
+    {
+        if (*str == '-')
+            neg *= -1;
+        str++;
+    }
+    while (*str >= '0' && *str <= '9')
+    {
+        ret = ret * 10 + (*str - '0');
+        str++;
+    }
+    return (ret * neg);
+}
+
 uint32  putnbr(int num, int base_len)
 {
     char s_num[nbrlen(num, base_len) + 2];
@@ -211,6 +235,7 @@ uint32  putnbr(int num, int base_len)
 int     printf(const char *fmt, ...)
 {
     int ret = 0;
+    char tmp[3] = {0};
 
     va_list ap;
     va_start(ap, fmt);
@@ -235,6 +260,15 @@ int     printf(const char *fmt, ...)
                     putchar(va_arg(ap, int));
                     ++ret;
                     break;
+            }
+        } else if (*fmt == '#') {
+            ++fmt;
+            if (isdigit(*fmt)) {
+                bzero(tmp, 3);
+                for (int i = 0; isdigit(*fmt); ++i, ++fmt)
+                    tmp[i] = *fmt;
+                fore_color = atoi(tmp);
+                continue;
             }
         } else {
             putchar(*fmt);

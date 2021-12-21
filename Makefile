@@ -11,17 +11,18 @@ ISO_PATH = iso
 BOOT_PATH = $(ISO_PATH)/boot
 GRUB_PATH = $(BOOT_PATH)/grub
 SRC = $(wildcard $(SRC_PATH)/*.c)
+SRC_ASM = $(wildcard $(SRC_PATH)/*.s)
 OBJ = $(SRC:.c=.o)
-OBJ += $(SRC_PATH)/boot.o
+OBJ += $(SRC_ASM:.s=.o)
 
-all: bootloader linker iso
+all: linker iso
 	@echo Finish!!!
-
-bootloader: $(SRC_PATH)/boot.s
-	nasm -f elf32 $(SRC_PATH)/boot.s
 
 %.o: %.c
 	gcc $(CFLAGS) -c $< -o $@
+
+%.o: %.s
+	nasm -f elf32 $<
 
 linker: $(SRC_PATH)/linker.ld $(OBJ)
 	ld -m elf_i386 -T $(SRC_PATH)/linker.ld -o kernel $(OBJ)

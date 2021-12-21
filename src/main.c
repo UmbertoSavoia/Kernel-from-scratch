@@ -21,18 +21,13 @@ int     main(void)
     vga_buffer = (uint16 *)VGA_ADDRESS;
     clear_vga_buffer();
 
-    putstr("42");
-    fore_color = RED;
-    new_line();
-    putstr("KFS - Umberto Savoia");
-
-    new_line();
-    fore_color = WHITE;
+    printf("%d\n", 42);
+    printf("#4KFS - Umberto Savoia#15\n");
 
     if (init_controller_ps2() != 0)
         return 1;
 
-    uint32 code = 0, tmp = 0;
+    /*uint32 code = 0, tmp = 0;
     while(1) {
         wait_ps2_read();
         code = inb(0x60);
@@ -45,5 +40,5 @@ int     main(void)
             code |= tmp;
         }
         printf("0x%x ", code);
-    }
+    }*/
 }

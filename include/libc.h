@@ -28,5 +28,6 @@ void    *memset(void *s, int c, uint32 n);
 char    *strnstr(const char *s1, const char *s2, uint32 len);
 int     tolower(int c);
 int     toupper(int c);
+int     atoi(const char *str);
 
 #endif
