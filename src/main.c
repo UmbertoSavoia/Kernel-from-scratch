@@ -1,19 +1,21 @@
 #include "../include/kernel.h"
 #include "../include/libc.h"
 
-const uint32     BUF_SIZE = 2200;
-uint16           *vga_buffer = 0;
-uint32           vga_index = 0;
-static uint32    line_index = 0;
-uint8            back_color = BLACK;
-uint8            fore_color = WHITE;
-uint8            cursor_y = 0;
-uint8            cursor_x = 0;
-struct gdtdesc   kgdt[GDTSIZE]; // GDT
-struct tss       default_tss;   // TSS
-struct gdtr      kgdtr;         // GDTR
-struct idtr      kidtr;         // IDTR
-struct idtdesc   kidt[IDTSIZE]; // IDT table
+uint16          *vga_buffer = 0;
+uint8           vga_index = 0;
+uint32          screen_backup[BUF_SIZE] = {0};
+static uint8    line_index = 0;
+uint8           back_color = BLACK;
+uint8           fore_color = WHITE;
+t_cursor        cursor = {0};
+t_cursor        cursor_backup = {0};
+uint32          tmp_screen[BUF_SIZE] = {0};
+t_cursor        tmp_cursor = {0};
+struct gdtdesc  kgdt[GDTSIZE]; // GDT
+struct tss      default_tss;   // TSS
+struct gdtr     kgdtr;         // GDTR
+struct idtr     kidtr;         // IDTR
+struct idtdesc  kidt[IDTSIZE]; // IDT table
 
 
 void    shutdown(void)

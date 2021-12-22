@@ -52,16 +52,16 @@ void isr_keyboard()
                 altgr = 0;
                 break;
             case 0x4B:
-                move_cursor(cursor_y, --cursor_x);
+                move_cursor(cursor.y, --cursor.x);
                 break;
             case 0x48:
-                move_cursor(--cursor_y, cursor_x);
+                move_cursor(--cursor.y, cursor.x);
                 break;
             case 0x4D:
-                move_cursor(cursor_y, ++cursor_x);
+                move_cursor(cursor.y, ++cursor.x);
                 break;
             case 0x50:
-                move_cursor(++cursor_y, cursor_x);
+                move_cursor(++cursor.y, cursor.x);
                 break;
             default:
                 break;
@@ -76,9 +76,10 @@ void isr_keyboard()
                 break;
             case 0x0f:
                 //= tab press;
+                putchar('\t');
                 break;
             case 0x1c:
-                printf("\n"); // Enter
+                putchar('\n'); // Enter
                 break;
             case 0x1d:
                 ctrl = 1;
@@ -97,6 +98,7 @@ void isr_keyboard()
                 break;
             case 0x3B:
                 //= F1 pressed;
+                switch_screen();
                 break;
             case 0x3C:
                 //= F2 pressed;
