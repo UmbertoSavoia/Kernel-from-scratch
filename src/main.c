@@ -2,9 +2,9 @@
 #include "../include/libc.h"
 
 uint16          *vga_buffer = 0;
-uint8           vga_index = 0;
+int             vga_index = 0;
 uint32          screen_backup[BUF_SIZE] = {0};
-static uint8    line_index = 0;
+static int      line_index = 0;
 uint8           back_color = BLACK;
 uint8           fore_color = WHITE;
 t_cursor        cursor = {0};

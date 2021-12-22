@@ -158,16 +158,16 @@ enum vga_color {
 };
 
 typedef struct s_cursor {
-    uint8 x;
-    uint8 y;
+    int x;
+    int y;
 } t_cursor;
 
 #define         VGA_ADDRESS 0xB8000;
 #define         BUF_SIZE 2200
 extern uint32          screen_backup[BUF_SIZE];
 extern uint16          *vga_buffer;
-extern uint8           vga_index;
-static uint8           line_index;
+extern int             vga_index;
+static int             line_index;
 extern uint8           back_color;
 extern uint8           fore_color;
 extern t_cursor        cursor;
@@ -179,8 +179,8 @@ void    clear_vga_buffer(void);
 void    new_line(void);
 void    putchar(char c);
 uint32  putstr(char *s);
-void    move_cursor(uint8 y, uint8 x);
-void    get_cursor_position(uint8 *x, uint8 *y);
+void    move_cursor(int y, int x);
+void    get_cursor_position(int *x, int *y);
 void    switch_screen(void);
 
 /**

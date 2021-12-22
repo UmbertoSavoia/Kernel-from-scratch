@@ -1,7 +1,7 @@
 #include "../include/kernel.h"
 #include "../include/libc.h"
 
-void    get_cursor_position(uint8 *x, uint8 *y)
+void    get_cursor_position(int *x, int *y)
 {
     uint16 pos = 0;
 
@@ -14,10 +14,29 @@ void    get_cursor_position(uint8 *x, uint8 *y)
     *x = pos % 80;
 }
 
-void    move_cursor(uint8 y, uint8 x)
+void    scroll()
 {
-    uint16 pos = y * 80 + x;
+    memcpy(vga_buffer, vga_buffer + 80, 25 * 80 * sizeof(uint32));
+    for (int i = 0; i < 80; ++i)
+        vga_buffer[24 * 80 + i] = (((BLACK << 4) | WHITE) << 8) | ' ';
+}
 
+void    move_cursor(int y, int x)
+{
+    uint16 pos = 0;
+
+    if (y < 0) {
+        cursor.y = y = 0;
+    } else if (x > 79 && y > 24) {
+        scroll();
+        cursor.x = x = 0;
+        cursor.y = y = 23;
+    } else if (y > 24) {
+        scroll();
+        cursor.y = y = 24;
+    }
+
+    pos = y * 80 + x;
     outb(0x3D4, 0x0F);
     outb(0x3D5, (uint8) (pos & 0xFF));
     outb(0x3D4, 0x0E);
@@ -81,9 +100,9 @@ void    switch_screen(void)
     tmp_cursor.x = cursor_backup.x;
     tmp_cursor.y = cursor_backup.y;
     get_cursor_position(&cursor_backup.x, &cursor_backup.y);
-    memcpy(tmp_screen, screen_backup, BUF_SIZE);
-    memcpy(screen_backup, vga_buffer, BUF_SIZE);
-    memcpy(vga_buffer, tmp_screen, BUF_SIZE);
+    memcpy(tmp_screen, screen_backup, 25 * 80 * sizeof(uint32));
+    memcpy(screen_backup, vga_buffer, 25 * 80 * sizeof(uint32));
+    memcpy(vga_buffer, tmp_screen, 25 * 80 * sizeof(uint32));
     move_cursor(tmp_cursor.y, tmp_cursor.x);
     cursor.x = tmp_cursor.x;
     cursor.y = tmp_cursor.y;
