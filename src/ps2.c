@@ -68,28 +68,28 @@ uint8   init_controller_ps2(void)
     is_dual_channel = send_command_to_ps2(0x64, 0x20, 0, 0, 1);
     is_dual_channel &= 0x20;
     if (!is_dual_channel)
-        printf("PS/2 : Dual channel\n");
+        printf("#14PS/2#15 : Dual channel\n");
     else
-        printf("PS/2 : Single channel\n");
+        printf("#14PS/2#15 : Single channel\n");
 
     // Eseguo l'autotest del controller
     if (send_command_to_ps2(0x64, 0xaa, 0, 0, 1) == 0x55)
-        printf("[ OK ] - Test controller ps2\n");
+        printf("[ #2OK#15 ] - Test controller ps2\n");
     else
-        printf("[ KO ] - Test controller ps2\n");
+        printf("[ #4KO#15 ] - Test controller ps2\n");
 
     // Eseguo i test ai due canali
     test1 = send_command_to_ps2(0x64, 0xab, 0, 0, 1);
     if (!test1)
-        printf("[ OK ] - Test primo canale ps2\n");
+        printf("[ #2OK#15 ] - Test primo canale ps2\n");
     else
-        printf("[ KO ] - Test primo canale ps2\n");
+        printf("[ #4KO#15 ] - Test primo canale ps2\n");
     if (!is_dual_channel) {
         test2 = send_command_to_ps2(0x64, 0xa9, 0, 0, 1);
         if (!test2)
-            printf("[ OK ] - Test secondo canale ps2\n");
+            printf("[ #2OK#15 ] - Test secondo canale ps2\n");
         else
-            printf("[ KO ] - Test secondo canale ps2\n");
+            printf("[ #4KO#15 ] - Test secondo canale ps2\n");
     }
     if ((test1 + test2) > 0)
         return 1;

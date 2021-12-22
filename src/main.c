@@ -12,6 +12,8 @@ uint8            cursor_x = 0;
 struct gdtdesc   kgdt[GDTSIZE]; // GDT
 struct tss       default_tss;   // TSS
 struct gdtr      kgdtr;         // GDTR
+struct idtr      kidtr;         // IDTR
+struct idtdesc   kidt[IDTSIZE]; // IDT table
 
 
 void    shutdown(void)
@@ -33,6 +35,9 @@ int     main(void)
     if (init_controller_ps2() != 0)
         return 1;
 
+    init_idt();
+    init_pic();
+    asm("sti");
     /*uint32 code = 0, tmp = 0;
     while(1) {
         wait_ps2_read();
