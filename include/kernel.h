@@ -111,9 +111,6 @@ struct idtdesc {
 extern struct idtdesc   kidt[IDTSIZE];
 extern struct idtr      kidtr;
 
-// IRQ - Interrupt Request
-void _asm_irq_0();
-void _asm_irq_1();
 void _asm_syscalls();
 void _asm_exception_general_protection_fault(void);
 void _asm_exception_page_fault(void);
@@ -127,6 +124,11 @@ void init_pic(void);
 /**
  * ISR - Interrupt Service Routine
  */
+
+// IRQ - Interrupt Request
+void _asm_irq_0();
+void _asm_irq_1();
+
 void isr_handler(int id);
 void isr_schedule_int();
 void isr_keyboard();
@@ -185,5 +187,10 @@ uint8   wait_ps2_read(void);
 uint8   wait_ps2_write(void);
 uint8   send_command_to_ps2(uint8 port, uint8 cmd, uint8 if_data, uint8 data, uint8 await);
 uint8   init_controller_ps2(void);
+
+/**
+ * Main
+ */
+void    shutdown(void);
 
 #endif

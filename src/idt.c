@@ -20,11 +20,11 @@ void init_idt(void)
         init_idt_desc(0x08, (uint32)_asm_schedule, INTGATE, &kidt[i]);
 
     /* Numeri  0 -> 31 sono per le eccezioni */
-    init_idt_desc(0x08, (uint32) _asm_exception_general_protection_fault, INTGATE, &kidt[13]);     /* #GP */
-    init_idt_desc(0x08, (uint32) _asm_exception_page_fault, INTGATE, &kidt[14]);     /* #PF */
+    init_idt_desc(0x08, (uint32) _asm_exception_general_protection_fault, INTGATE, &kidt[13]);  // General Protection Fault
+    init_idt_desc(0x08, (uint32) _asm_exception_page_fault, INTGATE, &kidt[14]);                // Page Fault
 
     init_idt_desc(0x08, (uint32) _asm_schedule, INTGATE, &kidt[32]);
-    init_idt_desc(0x08, (uint32) _asm_irq_1, INTGATE, &kidt[33]);       // Tastiera
+    init_idt_desc(0x08, (uint32) _asm_irq_1, INTGATE, &kidt[33]);                               // Tastiera
 
     // Syscall
     init_idt_desc(0x08, (uint32) _asm_syscalls, TRAPGATE, &kidt[48]);

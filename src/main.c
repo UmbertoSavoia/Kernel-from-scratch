@@ -38,18 +38,4 @@ int     main(void)
     init_idt();
     init_pic();
     asm("sti");
-    /*uint32 code = 0, tmp = 0;
-    while(1) {
-        wait_ps2_read();
-        code = inb(0x60);
-        if (code == 0xe0) {
-            wait_ps2_read();
-            while ((tmp = inb(0x60)) == 0xe0) {
-                wait_ps2_read();
-            }
-            code = code << 8;
-            code |= tmp;
-        }
-        printf("0x%x ", code);
-    }*/
 }
