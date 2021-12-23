@@ -3,15 +3,18 @@
 
 void    print_stack(void)
 {
+    uint32 nbyte = 128;
     uint8   *ebp = 0;
 
     __asm__ volatile ("movl %%ebp, %0" : "=r" (ebp) ::);
 
-    for(int i = 0; i < 4; ++i) {
-        printf("%d  ", i);
-        for (int j = 0; j < 16; ++j, ++ebp) {
-            printf("%x ", *ebp);
-        }
-        printf("\n");
+    for (uint32 i = 0; i < nbyte; i+=16) {
+        printf("%4x  ", i);
+        for (uint32 j = i; j < ((i + 16) < nbyte ? (i + 16) : nbyte); ++j)
+            printf("%2x ", ebp[j]);
+        printf("    |");
+        for (uint32 j = i; j < ((i + 16) < nbyte ? (i + 16) : nbyte); ++j)
+            printf("%c", isprint(ebp[j]) ? ebp[j] : '.');
+        printf("|\n");
     }
 }
