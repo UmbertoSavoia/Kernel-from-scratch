@@ -236,28 +236,147 @@ int     printf(const char *fmt, ...)
 {
     int ret = 0;
     char tmp[3] = {0};
+    char *str = 0;
+    int num = 0;
+    int c = 0;
+    uint32 unum = 0;
+    uint8 count = 0;
+    uint8 width = 0; // max width = 99
+    uint8 meno = 0;
 
     va_list ap;
     va_start(ap, fmt);
 
     while (*fmt) {
+        meno = width = num = count = unum = c = 0;
         if (*fmt == '%') {
             ++fmt;
+            if (*fmt == '-') {
+                meno = 1;
+                ++fmt;
+            }
+            if (isdigit(*fmt)) {
+                bzero(tmp, 3);
+                for (uint8 i = 0; isdigit(*fmt) && i < 3; ++i, ++fmt) {
+                    tmp[i] = *fmt;
+                }
+                width = atoi(tmp);
+            }
             switch (*fmt) {
                 case 's':
-                    ret += putstr(va_arg(ap, char*));
+                    str = va_arg(ap, char*);
+                    if (width > 0) {
+                        count = width - strlen(str);
+                        if (meno) {
+                            ret += putstr(str);
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar(' ');
+                            }
+                        } else {
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar(' ');
+                            }
+                            ret += putstr(str);
+                        }
+                    } else {
+                        ret += putstr(str);
+                    }
                     break;
                 case 'd':
-                    ret += putnbr(va_arg(ap, int), 10);
+                    num = va_arg(ap, int);
+                    if (width > 0) {
+                        count = width - nbrlen(num, 10);
+                        if (meno) {
+                            ret += putnbr(num, 10);
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar('0');
+                            }
+                        } else {
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar('0');
+                            }
+                            ret += putnbr(num, 10);
+                        }
+                    } else {
+                        ret += putnbr(num, 10);
+                    }
                     break;
                 case 'x':
-                    ret += putnbr(va_arg(ap, uint32), 16);
+                    unum = va_arg(ap, uint32);
+                    if (width > 0) {
+                        count = width - nbrlen(unum, 16);
+                        if (meno) {
+                            ret += putnbr(unum, 16);
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar('0');
+                            }
+                        } else {
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar('0');
+                            }
+                            ret += putnbr(unum, 16);
+                        }
+                    } else {
+                        ret += putnbr(unum, 16);
+                    }
                     break;
                 case 'u':
-                    ret += putnbr(va_arg(ap, uint32), 10);
+                    unum = va_arg(ap, uint32);
+                    if (width > 0) {
+                        count = width - nbrlen(unum, 10);
+                        if (meno) {
+                            ret += putnbr(unum, 10);
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar('0');
+                            }
+                        } else {
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar('0');
+                            }
+                            ret += putnbr(unum, 10);
+                        }
+                    } else {
+                        ret += putnbr(unum, 10);
+                    }
                     break;
                 default:
-                    putchar(va_arg(ap, int));
+                    c = va_arg(ap, int);
+                    if (width > 0) {
+                        count = width - 1;
+                        if (meno) {
+                            putchar(c);
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar(' ');
+                            }
+                        } else {
+                            if (count > 0) {
+                                ret += count;
+                                for (int i = 0; i < count; ++i)
+                                    putchar(' ');
+                            }
+                            putchar(c);
+                        }
+                    } else {
+                        putchar(c);
+                    }
                     ++ret;
                     break;
             }

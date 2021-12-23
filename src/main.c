@@ -53,5 +53,6 @@ int     main(void)
     init_idt();
     init_pic();
     print_header();
+
     asm("sti");
 }
