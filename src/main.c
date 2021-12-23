@@ -17,6 +17,21 @@ struct gdtr     kgdtr;         // GDTR
 struct idtr     kidtr;         // IDTR
 struct idtdesc  kidt[IDTSIZE]; // IDT table
 
+void    print_header(void)
+{
+    printf("  _   ________ _____     \n");
+    printf(" | | / /|  ___/  ___|    \n");
+    printf(" | |/ / | |_  \\ `--.    \n");
+    printf(" |    \\ |  _|  `--. \\  \n");
+    printf(" | |\\  \\| |   /\\__/ / \n");
+    printf(" \\_| \\_/\\_|   \\____/ \n\n");
+    printf("*--------Helper--------*\n");
+    printf("|                      |\n");
+    printf("| ESC - Shutodown      |\n");
+    printf("| F1  - Switch screen  |\n");
+    printf("|                      |\n");
+    printf("*----------------------*\n\n");
+}
 
 void    shutdown(void)
 {
@@ -33,11 +48,10 @@ int     main(void)
     printf("#4KFS - Umberto Savoia#15\n");
 
     init_gdt();
-
     if (init_controller_ps2() != 0)
         return 1;
-
     init_idt();
     init_pic();
+    print_header();
     asm("sti");
 }

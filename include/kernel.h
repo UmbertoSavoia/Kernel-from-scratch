@@ -203,4 +203,9 @@ uint8   init_controller_ps2(void);
  */
 void    shutdown(void);
 
+/**
+ * Shell
+ */
+void    print_stack(void);
+
 #endif
