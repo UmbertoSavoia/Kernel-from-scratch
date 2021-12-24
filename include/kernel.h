@@ -206,6 +206,11 @@ void    shutdown(void);
 /**
  * Shell
  */
+struct stackframe {
+    struct stackframe* ebp;
+    uint32 eip;
+};
+
 void    print_stack(void);
 
 #endif

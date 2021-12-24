@@ -1,5 +1,5 @@
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(start)                        /* punto di accesso del kernel */
+ENTRY(_start)                       /* punto di accesso del kernel */
 
 SECTIONS
 {

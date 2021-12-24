@@ -39,8 +39,10 @@ void    shutdown(void)
     // outw(0x4004, 0x3400); // Virtualbox
 }
 
-int     main(void)
+int     main(uint32 magic, uint32 *info)
 {
+    if (magic != 0x2BADB002)
+        return 1;
     vga_buffer = (uint16 *)VGA_ADDRESS;
     clear_vga_buffer();
 
