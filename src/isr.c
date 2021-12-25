@@ -101,14 +101,15 @@ void isr_keyboard()
                 break;
             case 0x3B:
                 //= F1 pressed;
-                switch_screen();
+                reboot();
                 break;
             case 0x3C:
                 //= F2 pressed;
-                print_stack();
+                switch_screen();
                 break;
             case 0x3D:
                 //= F3 pressed;
+                print_stack();
                 break;
             case 0x3E:
                 //= F4 pressed;

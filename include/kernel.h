@@ -202,6 +202,7 @@ uint8   init_controller_ps2(void);
  * Main
  */
 void    shutdown(void);
+void    reboot(void);
 
 /**
  * Shell

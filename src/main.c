@@ -29,9 +29,19 @@ void    print_header(void)
     printf("*--------Helper--------*\n");
     printf("|                      |\n");
     printf("| ESC - Shutodown      |\n");
-    printf("| F1  - Switch screen  |\n");
+    printf("| F1  - Reboot         |\n");
+    printf("| F2  - Switch screen  |\n");
+    printf("| F3  - Print Stack    |\n");
     printf("|                      |\n");
     printf("*----------------------*\n\n");
+}
+
+void    reboot(void)
+{
+    uint8 good = 0x02;
+    while (good & 0x02)
+        good = inb(0x64);
+    outb(0x64, 0xFE);
 }
 
 void    shutdown(void)
