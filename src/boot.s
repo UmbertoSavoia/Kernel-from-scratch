@@ -1,5 +1,3 @@
-bits 32
-
 MALIGN    equ 1 << 0
 MEMINFO   equ 1 << 1
 FLAGS     equ MALIGN | MEMINFO

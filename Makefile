@@ -2,7 +2,7 @@ TARGET = kfs.iso
 
 RM = rm -rf
 MKDIR = mkdir -pv
-CFLAGS = -m32 -fno-builtin -fno-exceptions -fno-stack-protector -nostdlib -nodefaultlibs
+CFLAGS = -m32 -ffreestanding -fno-builtin -fno-exceptions -fno-stack-protector -nostdlib -nodefaultlibs
 
 BIN = kernel
 CFG = grub.cfg
@@ -19,10 +19,10 @@ all: linker iso
 	@echo Finish!!!
 
 %.o: %.c
-	gcc $(CFLAGS) -c $< -o $@
+	gcc $(CFLAGS) -g -c $< -o $@
 
 %.o: %.s
-	nasm -f elf32 $<
+	nasm -f elf32 -g $<
 
 linker: $(SRC_PATH)/linker.ld $(OBJ)
 	ld -m elf_i386 -T $(SRC_PATH)/linker.ld -o kernel $(OBJ)
@@ -44,6 +44,6 @@ re: fclean all
 
 run:
 	yes | cp -iv kfs.iso /mnt/c/Users/umber/Desktop/.
-	/mnt/c/Program\ Files/qemu/qemu-system-x86_64.exe -cdrom "C:\Users\umber\Desktop\kfs.iso"
+	/mnt/c/Program\ Files/qemu/qemu-system-i386.exe -cdrom "C:\Users\umber\Desktop\kfs.iso"
 
 .PHONY: all clean fclean re

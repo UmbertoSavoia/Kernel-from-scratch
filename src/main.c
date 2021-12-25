@@ -16,6 +16,7 @@ struct tss      default_tss;   // TSS
 struct gdtr     kgdtr;         // GDTR
 struct idtr     kidtr;         // IDTR
 struct idtdesc  kidt[IDTSIZE]; // IDT table
+multiboot_t     *multiboot_info = 0;
 
 void    print_header(void)
 {
@@ -43,6 +44,7 @@ int     main(uint32 magic, uint32 *info)
 {
     if (magic != 0x2BADB002)
         return 1;
+    multiboot_info = (multiboot_t *)info;
     vga_buffer = (uint16 *)VGA_ADDRESS;
     clear_vga_buffer();
 
@@ -54,6 +56,7 @@ int     main(uint32 magic, uint32 *info)
         return 1;
     init_idt();
     init_pic();
+
     print_header();
 
     asm("sti");
