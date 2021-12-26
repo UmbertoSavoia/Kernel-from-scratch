@@ -52,16 +52,20 @@ void isr_keyboard()
                 altgr = 0;
                 break;
             case 0x4B:
+                if ((cursor.x - 1) < LEN_PROMPT)
+                    return;
                 move_cursor(cursor.y, --cursor.x);
                 break;
             case 0x48:
-                move_cursor(--cursor.y, cursor.x);
+                // Up arrow
+                // move_cursor(--cursor.y, cursor.x);
                 break;
             case 0x4D:
                 move_cursor(cursor.y, ++cursor.x);
                 break;
             case 0x50:
-                move_cursor(++cursor.y, cursor.x);
+                // Down arrow
+                // move_cursor(++cursor.y, cursor.x);
                 break;
             default:
                 break;
@@ -82,7 +86,8 @@ void isr_keyboard()
                 putchar('\t');
                 break;
             case 0x1c:
-                putchar('\n'); // Enter
+                //putchar('\n'); // Enter
+                handler_cmds();
                 break;
             case 0x1d:
                 ctrl = 1;

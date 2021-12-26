@@ -17,23 +17,25 @@ struct gdtr     kgdtr;         // GDTR
 struct idtr     kidtr;         // IDTR
 struct idtdesc  kidt[IDTSIZE]; // IDT table
 multiboot_t     *multiboot_info = 0;
+char            buffer_shell[4096] = {0};
 
 void    print_header(void)
 {
-    printf("  _   ________ _____     \n");
-    printf(" | | / /|  ___/  ___|    \n");
-    printf(" | |/ / | |_  \\ `--.    \n");
-    printf(" |    \\ |  _|  `--. \\  \n");
-    printf(" | |\\  \\| |   /\\__/ / \n");
-    printf(" \\_| \\_/\\_|   \\____/ \n\n");
-    printf("*--------Helper--------*\n");
-    printf("|                      |\n");
-    printf("| ESC - Shutodown      |\n");
-    printf("| F1  - Reboot         |\n");
-    printf("| F2  - Switch screen  |\n");
-    printf("| F3  - Print Stack    |\n");
-    printf("|                      |\n");
-    printf("*----------------------*\n\n");
+    printf("                   _   ________ _____     \n");
+    printf("                  | | / /|  ___/  ___|    \n");
+    printf("                  | |/ / | |_  \\ `--.    \n");
+    printf("                  |    \\ |  _|  `--. \\  \n");
+    printf("                  | |\\  \\| |   /\\__/ / \n");
+    printf("                  \\_| \\_/\\_|   \\____/ \n\n");
+    printf("*------------------------HELPER------------------------*\n");
+    printf("|  *--------Shortcut------*  *---------Shell--------*  |\n");
+    printf("|  |                      |  |                      |  |\n");
+    printf("|  | ESC - Shutdown       |  | print-stack          |  |\n");
+    printf("|  | F1  - Reboot         |  | help                 |  |\n");
+    printf("|  | F2  - Switch screen  |  | shutdown             |  |\n");
+    printf("|  | F3  - Print Stack    |  | reboot               |  |\n");
+    printf("|  |                      |  |                      |  |\n");
+    printf("|  *----------------------*  *----------------------*  |\n");
 }
 
 void    reboot(void)
@@ -58,8 +60,7 @@ int     main(uint32 magic, uint32 *info)
     vga_buffer = (uint16 *)VGA_ADDRESS;
     clear_vga_buffer();
 
-    printf("%d\n", 42);
-    printf("#4KFS - Umberto Savoia#15\n");
+    printf("%d - #4KFS - Umberto Savoia#15\n", 42);
 
     init_gdt();
     if (init_controller_ps2() != 0)
@@ -68,6 +69,7 @@ int     main(uint32 magic, uint32 *info)
     init_pic();
 
     print_header();
+    printf("\n$> ");
 
     asm("sti");
 }

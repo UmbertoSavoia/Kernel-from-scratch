@@ -174,6 +174,7 @@ extern t_cursor        cursor;
 extern t_cursor        cursor_backup;
 extern uint32          tmp_screen[BUF_SIZE];
 extern t_cursor        tmp_cursor;
+extern char            buffer_shell[4096];
 
 void    clear_vga_buffer(void);
 void    new_line(void);
@@ -203,17 +204,26 @@ uint8   init_controller_ps2(void);
  */
 void    shutdown(void);
 void    reboot(void);
+void    print_header(void);
 
 /**
  * Shell
  */
+#define LEN_PROMPT 3
+
 struct stackframe {
     struct stackframe* ebp;
     uint32 eip;
 };
 
+typedef struct  s_cmds {
+    char *name;
+    void (*f)(void);
+}               t_cmds;
+
 static char    *get_name_symbol(uint32 eip);
-void    print_stack(void);
+void            print_stack(void);
+void            handler_cmds(void);
 
 /**
  * Multiboot Grub

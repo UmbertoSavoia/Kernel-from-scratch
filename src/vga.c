@@ -21,8 +21,7 @@ void    scroll()
         vga_buffer[24 * 80 + i] = (((BLACK << 4) | WHITE) << 8) | ' ';
 }
 
-void    move_cursor(int y, int x)
-{
+void    move_cursor(int y, int x) {
     uint16 pos = 0;
 
     if (y < 0) {

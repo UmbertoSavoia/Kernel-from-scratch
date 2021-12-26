@@ -59,3 +59,27 @@ void    print_stack(void)
         printf("|\n");
     }
 }
+
+void    handler_cmds(void)
+{
+    int x = 0, y = 0, i = 0;
+    t_cmds cmd[] = {
+            {.name = "print-stack", .f = &print_stack},
+            {.name = "shutdown", .f = &shutdown},
+            {.name = "reboot", .f = &reboot},
+            {.name = "help", .f = &print_header}
+    };
+
+    get_cursor_position(&x, &y);
+    bzero(buffer_shell, 4096);
+    for (i = 0; i < (x - LEN_PROMPT); ++i)
+        buffer_shell[i] = vga_buffer[y * 80 + (i + LEN_PROMPT)];
+    buffer_shell[i] = 0;
+    for (int z = 0; z < (sizeof(cmd) / sizeof(*cmd)); ++z) {
+        if (!memcmp(buffer_shell, cmd[z].name, strlen(buffer_shell))) {
+            printf("\n\n");
+            cmd[z].f();
+        }
+    }
+    printf("\n$> ");
+}
