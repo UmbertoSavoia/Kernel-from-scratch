@@ -50,5 +50,5 @@ void init_gdt(void)
             movw %ax, %gs       \n \
             ljmp $0x08, $next   \n \
             next:               \n");
-    printf("#14GDT#15 : Inizializzato\n");
+    printf("[ #2OK#15 ] #14GDT#15 : Inizializzato\n");
 }

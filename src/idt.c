@@ -39,7 +39,7 @@ void init_idt(void)
     // Carico IDTR nella CPU
     asm("lidtl (kidtr)");
 
-    printf("#14IDT#15 : Inizializzato\n");
+    printf("[ #2OK#15 ] #14IDT#15 : Inizializzato\n");
 }
 
 void init_pic(void)
@@ -64,5 +64,5 @@ void init_pic(void)
     outb(0x21, 0x0);
     outb(0xA1, 0x0);
 
-    printf("#14PIC#15 : Inizializzato\n");
+    printf("[ #2OK#15 ] #14PIC#15 : Inizializzato\n");
 }
