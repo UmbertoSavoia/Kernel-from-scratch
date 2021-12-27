@@ -169,7 +169,7 @@ uint32  strlen(const char *s)
 uint32 nbrlen(int num, uint32 base_len)
 {
     uint32 count = 0;
-    uint32 u_num = num < 0 ? -(uint32)num : num;
+    uint32 u_num = num < 0 ? -(uint32)num : (uint32)num;
 
     if(num == 0)
         return 1;
@@ -184,7 +184,7 @@ void    itoa(int num, int base_len, char *str)
 {
     int len_num = nbrlen(num, base_len);
     char *base = (base_len == 10) ? "0123456789" : "0123456789abcdef";
-    uint32 u_num = num < 0 ? -(uint32)num : num;
+    uint32 u_num = num < 0 ? -(uint32)num : (uint32)num;
 
     if (num == 0 && len_num == 1) {
         str[0] = '0';

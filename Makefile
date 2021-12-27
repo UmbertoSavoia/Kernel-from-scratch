@@ -3,6 +3,7 @@ TARGET = kfs.iso
 RM = rm -rf
 MKDIR = mkdir -pv
 CFLAGS = -m32 -ffreestanding -fno-builtin -fno-exceptions -fno-stack-protector -nostdlib -nodefaultlibs
+CFLAGS += -Werror -Wextra -Wall
 
 BIN = kernel
 CFG = grub.cfg

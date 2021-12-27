@@ -2,7 +2,7 @@
 #include "../include/libc.h"
 
 void schedule() {}
-void do_syscalls(int num) {}
+void do_syscalls(int num) { (void)num; }
 
 void init_idt_desc(uint16 select, uint32 offset, uint16 type, struct idtdesc *desc)
 {

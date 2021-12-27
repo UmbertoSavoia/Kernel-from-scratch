@@ -167,7 +167,7 @@ typedef struct s_cursor {
 extern uint32          screen_backup[BUF_SIZE];
 extern uint16          *vga_buffer;
 extern int             vga_index;
-static int             line_index;
+int             line_index;
 extern uint8           back_color;
 extern uint8           fore_color;
 extern t_cursor        cursor;
@@ -221,7 +221,7 @@ typedef struct  s_cmds {
     void (*f)(void);
 }               t_cmds;
 
-static char    *get_name_symbol(uint32 eip);
+char            *get_name_symbol(uint32 eip);
 void            print_stack(void);
 void            handler_cmds(void);
 

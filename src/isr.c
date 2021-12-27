@@ -22,8 +22,8 @@ void isr_keyboard()
             '0', '.'
     };
     static uint8 shift;
-    static uint8 ctrl;
-    static uint8 altgr;
+    // static uint8 ctrl;
+    // static uint8 altgr;
     static uint8 flag;
     static uint8 capslock;
     uint8 scancode = inb(0x60);
@@ -37,19 +37,19 @@ void isr_keyboard()
                 printf("\n");
                 break;
             case 0x1D:
-                ctrl = 1;
+                // ctrl = 1;
                 break;
             case 0x38:
-                altgr = 1;
+                //altgr = 1;
                 break;
             case 0x53:
                 // canc(delete)
                 break;
             case 0x9D:
-                ctrl = 0;
+                // ctrl = 0;
                 break;
             case 0xB8:
-                altgr = 0;
+                //altgr = 0;
                 break;
             case 0x4B:
                 if ((cursor.x - 1) < LEN_PROMPT)
@@ -90,7 +90,7 @@ void isr_keyboard()
                 handler_cmds();
                 break;
             case 0x1d:
-                ctrl = 1;
+                // ctrl = 1;
                 break;
             case 0x2a:
                 shift = 1;
@@ -144,7 +144,7 @@ void isr_keyboard()
                 //= F12 pressed;
                 break;
             case 0x9D:
-                ctrl = 0;
+                // ctrl = 0;
                 break;
             case 0xAA:
                 shift = 0;

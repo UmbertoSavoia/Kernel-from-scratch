@@ -1,7 +1,7 @@
 #include "../include/kernel.h"
 #include "../include/libc.h"
 
-static char    *get_name_symbol(uint32 eip)
+char    *get_name_symbol(uint32 eip)
 {
     multiboot_elf_section_header_table_t *elf = 0;
     Elf32_Shdr  *shdr = 0;
@@ -16,7 +16,7 @@ static char    *get_name_symbol(uint32 eip)
     for (uint32 i = 0; i < elf->num; ++i) {
         shdr = (Elf32_Shdr *)(elf->addr + (elf->size * i));
         if (shdr->sh_type == SHT_SYMTAB) {
-            symtab = shdr->sh_addr;
+            symtab = (Elf32_Sym *)shdr->sh_addr;
             symnum = shdr->sh_size / sizeof(Elf32_Sym);
         }
         else if (i == elf->shndx - 1)
@@ -62,7 +62,7 @@ void    print_stack(void)
 
 void    handler_cmds(void)
 {
-    int x = 0, y = 0, i = 0;
+    int x = 0, y = 0, i = 0, size_cmds = 0;
     t_cmds cmd[] = {
             {.name = "print-stack", .f = &print_stack},
             {.name = "shutdown", .f = &shutdown},
@@ -75,7 +75,8 @@ void    handler_cmds(void)
     for (i = 0; i < (x - LEN_PROMPT); ++i)
         buffer_shell[i] = vga_buffer[y * 80 + (i + LEN_PROMPT)];
     buffer_shell[i] = 0;
-    for (int z = 0; z < (sizeof(cmd) / sizeof(*cmd)); ++z) {
+    size_cmds = sizeof(cmd) / sizeof(*cmd);
+    for (int z = 0; z < size_cmds; ++z) {
         if (!memcmp(buffer_shell, cmd[z].name, strlen(buffer_shell))) {
             printf("\n\n");
             cmd[z].f();
