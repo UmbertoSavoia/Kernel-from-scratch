@@ -1,5 +1,5 @@
-#include "../include/kernel.h"
-#include "../include/libc.h"
+#include "../../include/kernel.h"
+#include "../../include/libc.h"
 
 uint8   wait_ps2_read(void)
 {

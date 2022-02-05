@@ -1,5 +1,5 @@
-#include "../include/kernel.h"
-#include "../include/libc.h"
+#include "../../include/kernel.h"
+#include "../../include/libc.h"
 
 void schedule() {}
 void do_syscalls(int num) { (void)num; }

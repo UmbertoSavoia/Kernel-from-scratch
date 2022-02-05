@@ -1,5 +1,5 @@
-#include "../include/kernel.h"
-#include "../include/libc.h"
+#include "../../include/kernel.h"
+#include "../../include/libc.h"
 
 void init_gdt_desc(uint32 base, uint32 limite, uint8 acces, uint8 other, struct gdtdesc *desc)
 {

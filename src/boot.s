@@ -13,7 +13,7 @@ align 4
 section .bss
 align 16
 stack_bottom:
-    resb 16384          ; riservo 16 KiB per lo stack
+    resb 16384          ; riservo 16 MB per lo stack
 stack_top:
 
 section .text

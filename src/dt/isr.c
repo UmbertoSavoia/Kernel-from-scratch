@@ -1,5 +1,5 @@
-#include "../include/kernel.h"
-#include "../include/libc.h"
+#include "../../include/kernel.h"
+#include "../../include/libc.h"
 
 void isr_schedule_int() {}
 

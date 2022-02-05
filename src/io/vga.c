@@ -1,5 +1,5 @@
-#include "../include/kernel.h"
-#include "../include/libc.h"
+#include "../../include/kernel.h"
+#include "../../include/libc.h"
 
 void    get_cursor_position(int *x, int *y)
 {

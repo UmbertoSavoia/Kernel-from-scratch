@@ -1,6 +1,25 @@
 #include "../include/kernel.h"
 #include "../include/libc.h"
 
+void    print_header(void)
+{
+    printf("                   _   ________ _____     \n"
+           "                  | | / /|  ___/  ___|    \n"
+           "                  | |/ / | |_  \\ `--.    \n"
+           "                  |    \\ |  _|  `--. \\  \n"
+           "                  | |\\  \\| |   /\\__/ / \n"
+           "                  \\_| \\_/\\_|   \\____/ \n\n"
+           "*------------------------HELPER------------------------*\n"
+           "|  *--------Shortcut------*  *---------Shell--------*  |\n"
+           "|  |                      |  |                      |  |\n"
+           "|  | ESC - Shutdown       |  | print-stack          |  |\n"
+           "|  | F1  - Reboot         |  | help                 |  |\n"
+           "|  | F2  - Switch screen  |  | shutdown             |  |\n"
+           "|  | F3  - Print Stack    |  | reboot               |  |\n"
+           "|  |                      |  |                      |  |\n"
+           "|  *----------------------*  *----------------------*  |\n");
+}
+
 char    *get_name_symbol(uint32 eip)
 {
     multiboot_elf_section_header_table_t *elf = 0;
