@@ -34,6 +34,13 @@ void    shutdown(void)
     // outw(0x4004, 0x3400); // Virtualbox
 }
 
+void    panic(const char *msg)
+{
+    disable_interrupts();
+    printf("\n#4KERNEL PANIC#15 %s", msg);
+    while (1);
+}
+
 int     main(uint32 magic, uint32 *info)
 {
     if (magic != 0x2BADB002)
@@ -73,7 +80,7 @@ int     main(uint32 magic, uint32 *info)
     printf("\n$> ");
 
     enable_interrupts();
-    while(1);
 
+    while(1);
     return 0;
 }
