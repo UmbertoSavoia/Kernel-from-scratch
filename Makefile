@@ -12,7 +12,7 @@ ISO_PATH = iso
 BOOT_PATH = $(ISO_PATH)/boot
 GRUB_PATH = $(BOOT_PATH)/grub
 SRC = $(wildcard */*.c) $(wildcard */*/*.c)
-SRC_ASM = $(wildcard $(SRC_PATH)/*.s)
+SRC_ASM = $(wildcard */*.s) $(wildcard */*/*.s)
 OBJ = $(SRC:.c=.o)
 OBJ += $(SRC_ASM:.s=.o)
 

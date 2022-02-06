@@ -11,13 +11,14 @@ t_cursor        cursor = {0};
 t_cursor        cursor_backup = {0};
 uint32          tmp_screen[BUF_SIZE] = {0};
 t_cursor        tmp_cursor = {0};
-struct gdtdesc  kgdt[GDTSIZE]; // GDT
+struct gdtdesc  kgdt[GDTSIZE] = {0}; // GDT
 struct tss      default_tss;   // TSS
 struct gdtr     kgdtr;         // GDTR
 struct idtr     kidtr;         // IDTR
-struct idtdesc  kidt[IDTSIZE]; // IDT table
+struct idtdesc  kidt[IDTSIZE] = {0}; // IDT table
 multiboot_t     *multiboot_info = 0;
 char            buffer_shell[4096] = {0};
+uint32          *kpage_directory = 0;
 
 void    reboot(void)
 {
@@ -55,12 +56,24 @@ int     main(uint32 magic, uint32 *info)
     if (init_memory() == -1) {
         printf("#4Memory error#15\n");
         return 1;
+    } else {
+        printf("[ #2OK#15 ] #14HEAP#15 : Inizializzato\n");
     }
 
-    print_header();
+    kpage_directory = new_page_directory(PAGING_IS_WRITEABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
+
+    if (kpage_directory) {
+        switch_paging(kpage_directory);
+        enable_paging();
+    } else {
+        return 1;
+    }
+
+    //print_header();
     printf("\n$> ");
 
-    asm("sti");
+    enable_interrupts();
+    while(1);
 
     return 0;
 }

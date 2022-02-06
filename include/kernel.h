@@ -18,10 +18,15 @@ typedef unsigned int uint32;
 #include "grub.h"
 #include "memory.h"
 
+extern uint32 *kpage_directory;
+
 /**
  * Main
  */
 void    shutdown(void);
 void    reboot(void);
+
+void disable_interrupts();
+void enable_interrupts();
 
 #endif

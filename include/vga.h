@@ -30,7 +30,7 @@ typedef struct s_cursor {
 extern uint32          screen_backup[BUF_SIZE];
 extern uint16          *vga_buffer;
 extern int             vga_index;
-int             line_index;
+extern int             line_index;
 extern uint8           back_color;
 extern uint8           fore_color;
 extern t_cursor        cursor;

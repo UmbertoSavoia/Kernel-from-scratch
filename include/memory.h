@@ -53,4 +53,24 @@ int heap_init(heap *heap, heap_table *table, void *start, void *end);
 void *heap_malloc(heap *heap, uint32 size);
 void heap_free(heap *heap, void *ptr);
 
+/**
+ * PAGING
+ */
+
+#define PAGING_CACHE_DISABLED           0b00010000
+#define PAGING_WRITE_THROUGH            0b00001000
+#define PAGING_ACCESS_FROM_ALL          0b00000100
+#define PAGING_IS_WRITEABLE             0b00000010
+#define PAGING_IS_PRESENT               0b00000001
+#define PAGING_TOTAL_ENTRIES_PER_TABLE  1024
+#define PAGING_PAGE_SIZE                4096
+
+extern uint32 *current_page_directory;
+
+void load_page_directory(uint32 *page_directory);
+void enable_paging(void);
+
+uint32 *new_page_directory(uint8 flags);
+void switch_paging(uint32 *directory);
+
 #endif
