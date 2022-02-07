@@ -184,10 +184,10 @@ void isr_handler(int id)
 
 void isr_general_protection_fault_exception(void)
 {
-    printf("#4General Protection Fault#15\n");
+    panic("General Protection Fault");
 }
 
 void isr_page_fault_exception(void)
 {
-    printf("#4Page Fault#15\n");
+    panic("Page Fault");
 }

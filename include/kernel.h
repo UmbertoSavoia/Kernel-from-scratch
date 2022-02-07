@@ -25,6 +25,7 @@ extern uint32 *kpage_directory;
  */
 void    shutdown(void);
 void    reboot(void);
+void    panic(const char *msg);
 
 void disable_interrupts();
 void enable_interrupts();

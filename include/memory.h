@@ -45,6 +45,7 @@ int  init_memory(void);
 void *kmalloc(uint32 size);
 void kfree(void *ptr);
 void *kcalloc(uint32 size);
+uint32 get_size_addr(void *addr);
 
 /**
  * HEAP
@@ -52,6 +53,7 @@ void *kcalloc(uint32 size);
 int heap_init(heap *heap, heap_table *table, void *start, void *end);
 void *heap_malloc(heap *heap, uint32 size);
 void heap_free(heap *heap, void *ptr);
+uint32 heap_get_size_addr(heap *heap, void *addr);
 
 /**
  * PAGING

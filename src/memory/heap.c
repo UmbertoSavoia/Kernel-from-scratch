@@ -13,6 +13,11 @@ uint32 align_value(uint32 val)
     return ((val - (val % HEAP_BLOCK_SIZE)) + HEAP_BLOCK_SIZE);
 }
 
+uint32 heap_get_index_from_addr(heap *heap, void *addr)
+{
+    return ((uint32)(addr - heap->start_addr)) / HEAP_BLOCK_SIZE;
+}
+
 int heap_init(heap *heap, heap_table *table, void *start, void *end)
 {
     if (!is_aligned(start) || !is_aligned(end))
@@ -65,7 +70,7 @@ void *heap_malloc(heap *heap, uint32 size)
     for (int i = start; i <= end; ++i) {
         heap->table->entries[i] = flag;
         flag = HEAP_BLOCK_TABLE_TAKEN;
-        if (i != end - 1)
+        if (i != end)
             flag |= HEAP_BLOCK_HAS_NEXT;
     }
     return addr;
@@ -81,4 +86,18 @@ void heap_free(heap *heap, void *ptr)
         if (!(entry & HEAP_BLOCK_HAS_NEXT))
             break;
     }
+}
+
+uint32 heap_get_size_addr(heap *heap, void *addr)
+{
+    int i = heap_get_index_from_addr(heap, addr);
+    int ret = 0;
+
+    do {
+        ret++;
+        i++;
+    } while ((heap->table->entries[i] & HEAP_BLOCK_HAS_NEXT)
+        && !(heap->table->entries[i] & HEAP_BLOCK_IS_FIRST));
+
+    return ret * HEAP_BLOCK_SIZE;
 }

@@ -34,3 +34,8 @@ void *kcalloc(uint32 size)
     bzero(ret, size);
     return ret;
 }
+
+uint32 get_size_addr(void *addr)
+{
+    return heap_get_size_addr(&kheap, addr);
+}
