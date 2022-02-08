@@ -40,7 +40,7 @@ _asm_exception_%1:
     push esp
     push dword %1
     call exception_handler
-    pop eax
+    add esp, 8
     mov al,0x20
     out 0x20,al
     popad
