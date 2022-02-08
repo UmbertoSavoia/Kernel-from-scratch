@@ -81,6 +81,10 @@ int     main(uint32 magic, uint32 *info)
 
     enable_interrupts();
 
+    /* Test syscall
+        asm("int $0x30");
+    */
+
     while(1);
     return 0;
 }

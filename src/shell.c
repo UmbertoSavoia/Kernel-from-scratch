@@ -16,6 +16,8 @@ void    print_header(void)
            "|  | F1  - Reboot         |  | help                 |  |\n"
            "|  | F2  - Switch screen  |  | shutdown             |  |\n"
            "|  | F3  - Print Stack    |  | reboot               |  |\n"
+           "|  | F4  - Change Keyboard|  |                      |  |\n"
+           "|  |        layout        |  |                      |  |\n"
            "|  |                      |  |                      |  |\n"
            "|  *----------------------*  *----------------------*  |\n");
 }
@@ -79,9 +81,20 @@ void    print_stack(void)
     }
 }
 
+void get_line(void)
+{
+    int i = 0, x = 0, y = 0;
+
+    get_cursor_position(&x, &y);
+    bzero(buffer_shell, 4096);
+    for (i = 0; i < (x - LEN_PROMPT); ++i)
+        buffer_shell[i] = vga_buffer[y * 80 + (i + LEN_PROMPT)];
+    buffer_shell[i] = 0;
+}
+
 void    handler_cmds(void)
 {
-    int x = 0, y = 0, i = 0, size_cmds = 0;
+    int size_cmds = 0;
     t_cmds cmd[] = {
             {.name = "print-stack", .f = &print_stack},
             {.name = "shutdown", .f = &shutdown},
@@ -89,11 +102,7 @@ void    handler_cmds(void)
             {.name = "help", .f = &print_header}
     };
 
-    get_cursor_position(&x, &y);
-    bzero(buffer_shell, 4096);
-    for (i = 0; i < (x - LEN_PROMPT); ++i)
-        buffer_shell[i] = vga_buffer[y * 80 + (i + LEN_PROMPT)];
-    buffer_shell[i] = 0;
+    get_line();
     size_cmds = sizeof(cmd) / sizeof(*cmd);
     for (int z = 0; z < size_cmds; ++z) {
         if (!memcmp(buffer_shell, cmd[z].name, strlen(buffer_shell))) {

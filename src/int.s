@@ -1,4 +1,4 @@
-extern isr_handler, do_syscalls, isr_schedule_int, isr_general_protection_fault_exception, isr_page_fault_exception
+extern isr_handler, do_syscalls, isr_schedule_int, isr_general_protection_fault_exception, isr_page_fault_exception, exception_handler
 
 %macro  SAVE_REGS 0
     pushad
@@ -20,16 +20,30 @@ extern isr_handler, do_syscalls, isr_schedule_int, isr_general_protection_fault_
     popad
 %endmacro
 
-%macro  INTERRUPT 1
+%macro  INTERRUPT_IRQ 1
 global _asm_irq_%1
 _asm_irq_%1:
     SAVE_REGS
-    push %1
+    push dword %1
     call isr_handler
     pop eax
     mov al,0x20
     out 0x20,al
     RESTORE_REGS
+    iret
+%endmacro
+
+%macro  INTERRUPT_EXCEPTION 1
+global _asm_exception_%1
+_asm_exception_%1:
+    pushad
+    push esp
+    push dword %1
+    call exception_handler
+    pop eax
+    mov al,0x20
+    out 0x20,al
+    popad
     iret
 %endmacro
 
@@ -44,20 +58,6 @@ _asm_syscalls:
     RESTORE_REGS
     iret
 
-_asm_exception_general_protection_fault:
-    SAVE_REGS
-    call isr_general_protection_fault_exception
-    RESTORE_REGS
-    add esp,4
-    iret
-
-_asm_exception_page_fault:
-    SAVE_REGS
-    call isr_page_fault_exception
-    RESTORE_REGS
-    add esp,4
-    iret
-
 global _asm_schedule
 _asm_schedule:
     SAVE_REGS
@@ -66,9 +66,6 @@ _asm_schedule:
     out 0x20,al
     RESTORE_REGS
     iret
-
-INTERRUPT 1
-INTERRUPT 2
 
 global enable_interrupts
 enable_interrupts:
@@ -79,3 +76,27 @@ global disable_interrupts
 disable_interrupts:
     cli
     ret
+
+INTERRUPT_IRQ 1
+INTERRUPT_IRQ 2
+
+INTERRUPT_EXCEPTION 0
+INTERRUPT_EXCEPTION 1
+INTERRUPT_EXCEPTION 2
+INTERRUPT_EXCEPTION 3
+INTERRUPT_EXCEPTION 4
+INTERRUPT_EXCEPTION 5
+INTERRUPT_EXCEPTION 6
+INTERRUPT_EXCEPTION 7
+INTERRUPT_EXCEPTION 8
+INTERRUPT_EXCEPTION 9
+INTERRUPT_EXCEPTION 10
+INTERRUPT_EXCEPTION 11
+INTERRUPT_EXCEPTION 12
+INTERRUPT_EXCEPTION 13
+INTERRUPT_EXCEPTION 14
+INTERRUPT_EXCEPTION 15
+INTERRUPT_EXCEPTION 16
+INTERRUPT_EXCEPTION 17
+INTERRUPT_EXCEPTION 18
+INTERRUPT_EXCEPTION 19

@@ -5,7 +5,7 @@ void isr_schedule_int() {}
 
 void isr_keyboard()
 {
-    static char keycode[] = {
+    static char qwerty[] = {
             0, 0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
             '-', '=', 0, 0,
             'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']',
@@ -21,6 +21,20 @@ void isr_keyboard()
             '1', '2', '3',
             '0', '.'
     };
+
+    static char azerty[] = {
+            0, 0, '&', 0, '"', '\'', '(', 0, 0, '!', 0, 0, ')',
+            '-', '\b', 0,
+            'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '^', '$',
+            '\n', 0, 'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm',
+            0, '<', 0, '`',
+            'w', 'x', 'c', 'v', 'b', 'n',
+            ',', ';', ':', '=', 0, '*', 0, ' ', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, '7', '8', '9', '-', '4', '5', '6', '+', '1', '2', '3', '0', '.', '6',
+            0, 0, 0, 0, 0
+    };
+
+    static char *keycode = qwerty;
     static uint8 shift;
     // static uint8 ctrl;
     // static uint8 altgr;
@@ -118,6 +132,7 @@ void isr_keyboard()
                 break;
             case 0x3E:
                 //= F4 pressed;
+                keycode = (keycode == qwerty) ? azerty : qwerty;
                 break;
             case 0x3F:
                 //= F5 pressed;
@@ -182,12 +197,16 @@ void isr_handler(int id)
     outb(0xA0,0x20);
 }
 
-void isr_general_protection_fault_exception(void)
+void exception_handler(int id, interrupt_frame *frame)
 {
-    panic("General Protection Fault");
-}
-
-void isr_page_fault_exception(void)
-{
-    panic("Page Fault");
+    char *msg[] = {
+            "Divide by 0", "Reserved", "NMI Interrupt", "Breakpoint (INT3)", "Overflow (INTO)",
+            "Bounds range exceeded (BOUND)", "Invalid opcode (UD2)", "Device not available (WAIT/FWAIT)",
+            "Double fault", "Coprocessor segment overrun", "Invalid TSS", "Segment not present",
+            "Stack-segment fault", "General protection fault", "Page fault", "Reserved", "x87 FPU error",
+            "Alignment check", "Machine check", "SIMD Floating-Point Exception",
+    };
+    (void)frame;
+    if (0 <= id && id < 20)
+        panic(msg[id]);
 }
