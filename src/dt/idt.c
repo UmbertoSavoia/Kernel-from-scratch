@@ -39,15 +39,15 @@ void init_idt(void)
     init_idt_desc(0x08, (uint32) _asm_schedule, INTGATE, &kidt[32]);
     init_idt_desc(0x08, (uint32) _asm_irq_1, INTGATE, &kidt[33]);     // Tastiera
 
-    // Numero 48 -> 255 per Syscall
+    // Numeri 48 -> 255 per Syscall
     for (int i = 48; i < IDTSIZE; ++i)
-        init_idt_desc(0x08, (uint32) _asm_syscalls, TRAPGATE, &kidt[i]); //48
+        init_idt_desc(0x08, (uint32) _asm_syscalls, TRAPGATE, &kidt[i]);
 
 
     kidtr.limite = IDTSIZE * 8;
     kidtr.base = IDTBASE;
 
-    // Copio IDT nella memoria
+    // Sposto IDT
     memcpy((char *) kidtr.base, (char *) kidt, kidtr.limite);
 
     // Carico IDTR nella CPU

@@ -20,7 +20,7 @@ void init_gdt(void)
     default_tss.esp0 = 0x1FFF0;
     default_tss.ss0 = 0x18;
 
-    // Inizializzo i segmenti gdt
+    // Inizializzo i segmenti
     init_gdt_desc(0x0, 0x0, 0x0, 0x0, &kgdt[0]);          // Segment null
     init_gdt_desc(0x0, 0xFFFFF, 0x9B, 0x0D, &kgdt[1]);    // kernel code
     init_gdt_desc(0x0, 0xFFFFF, 0x93, 0x0D, &kgdt[2]);    // kernel data
@@ -36,13 +36,13 @@ void init_gdt(void)
     kgdtr.limite = GDTSIZE * 8;
     kgdtr.base = GDTBASE;
 
-    // Copio il gdtr nella sua area di memoria
+    // Sposto GDTR
     memcpy((char *) kgdtr.base, (char *) kgdt, kgdtr.limite);
 
-    /* Carico nella CPU il gdtr */
+    // Carico nella CPU il gdtr
     asm("lgdtl (kgdtr)");
 
-    /* Inizializzo i segmenti */
+    // Inizializzo i segmenti
     asm("   movw $0x10, %ax     \n \
             movw %ax, %ds       \n \
             movw %ax, %es       \n \
