@@ -17,8 +17,11 @@ typedef unsigned int uint32;
 #include "shell.h"
 #include "grub.h"
 #include "memory.h"
+#include "signal.h"
 
 extern uint32 *kpage_directory;
+
+void program(void);
 
 /**
  * Main

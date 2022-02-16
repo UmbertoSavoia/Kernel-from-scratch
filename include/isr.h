@@ -45,7 +45,7 @@ void _asm_exception_18();
 void _asm_exception_19();
 
 void isr_handler(int id);
-void isr_schedule_int();
+void isr_clock();
 void isr_keyboard();
 
 void exception_handler(int id, interrupt_frame *frame);

@@ -1,5 +1,4 @@
 #include "../../include/kernel.h"
-#include "../../include/libc.h"
 
 uint32 *current_page_directory = 0;
 
@@ -22,8 +21,45 @@ uint32 *new_page_directory(uint8 flags)
     return directory;
 }
 
+void free_page_directory(uint32 *page_directory)
+{
+    for (int i = 0; i < PAGING_TOTAL_ENTRIES_PER_TABLE; ++i)
+        kfree((uint32 *)(((uint32)page_directory[i]) & 0xfffff000));
+    kfree(page_directory);
+}
+
 void switch_paging(uint32 *directory)
 {
     load_page_directory(directory);
     current_page_directory = directory;
+}
+
+int get_indexes_paging(uint32 *vaddr, uint32 *index_directory, uint32 *index_table)
+{
+    if ((uint32)vaddr % PAGING_PAGE_SIZE)
+        return -1;
+    *index_directory = ((uint32)vaddr / (PAGING_TOTAL_ENTRIES_PER_TABLE * PAGING_PAGE_SIZE));
+    *index_table = ((uint32)vaddr % (PAGING_TOTAL_ENTRIES_PER_TABLE * PAGING_PAGE_SIZE) / PAGING_PAGE_SIZE);
+    return 0;
+}
+
+int map_page_directory_to(uint32 *page_directory, uint32 *vaddr, uint32 *paddr, uint32 *paddr_end, int flags)
+{
+    uint32 directory_index = 0, table_index = 0, entry = 0;
+    uint32 *table = 0;
+
+    if (((uint32)vaddr % PAGING_PAGE_SIZE) || ((uint32)paddr % PAGING_PAGE_SIZE)
+    || ((uint32)paddr_end % PAGING_PAGE_SIZE) || ((uint32)paddr_end < (uint32)paddr))
+        return -1;
+
+    for (int i = 0; i <= ((paddr_end - paddr) / PAGING_PAGE_SIZE);
+        ++i, vaddr += PAGING_PAGE_SIZE, paddr += PAGING_PAGE_SIZE) {
+        directory_index = 0;
+        table_index = 0;
+        get_indexes_paging(vaddr, &directory_index, &table_index);
+        entry = page_directory[directory_index];
+        table = (uint32 *)(entry & 0xfffff000);
+        table[table_index] = (uint32)paddr | flags;
+    }
+    return 0;
 }

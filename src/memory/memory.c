@@ -4,6 +4,13 @@
 heap kheap = {0};
 heap_table kheap_table = {0};
 
+uint32 align_value(uint32 val, uint32 align_at)
+{
+    if (!(val % align_at))
+        return val;
+    return ((val - (val % align_at)) + align_at);
+}
+
 int     init_memory(void)
 {
     kheap_table.entries = (uint8*)HEAP_TABLE_ADDRESS;

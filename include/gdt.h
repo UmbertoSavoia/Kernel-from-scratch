@@ -4,6 +4,14 @@
 #define GDTBASE 0x00000800
 #define GDTSIZE 0xFF
 
+#define KERNEL_CODE_SELECTOR    0x08
+#define KERNEL_DATA_SELECTOR    0x10
+#define KERNEL_STACK_SELECTOR   0x18
+#define USER_CODE_SELECTOR      0x20
+#define USER_DATA_SELECTOR      0x28
+#define USER_STACK_SELECTOR     0x30
+#define TSS_SELECTOR            0x38
+
 struct gdtr {
     uint16 limite; // Dimensione in byte totale della GDT - 1
     uint32 base; // Indirizzo fisico della GDT
@@ -49,32 +57,41 @@ struct gdtdesc {
     uint8  base24_31;
 } __attribute__ ((packed));
 
-struct tss {
-    uint16 previous_task, __previous_task_unused;
+struct s_tss
+{
+    uint32 link;
     uint32 esp0;
-    uint16 ss0, __ss0_unused;
+    uint32 ss0;
     uint32 esp1;
-    uint16 ss1, __ss1_unused;
     uint32 esp2;
-    uint16 ss2, __ss2_unused;
-    uint32 cr3;
-    uint32 eip, eflags, eax, ecx, edx, ebx, esp, ebp, esi, edi;
-    uint16 es, __es_unused;
-    uint16 cs, __cs_unused;
-    uint16 ss, __ss_unused;
-    uint16 ds, __ds_unused;
-    uint16 fs, __fs_unused;
-    uint16 gs, __gs_unused;
-    uint16 ldt_selector, __ldt_sel_unused;
-    uint16 debug_flag, io_map;
-} __attribute__ ((packed));
+    uint32 ss2;
+    uint32 sr3;
+    uint32 eip;
+    uint32 eflags;
+    uint32 eax;
+    uint32 ecx;
+    uint32 edx;
+    uint32 ebx;
+    uint32 esp;
+    uint32 ebp;
+    uint32 esi;
+    uint32 edi;
+    uint32 es;
+    uint32 cs;
+    uint32 ss;
+    uint32 ds;
+    uint32 fs;
+    uint32 gs;
+    uint32 ldtr;
+    uint32 iopb;
+} __attribute__((packed));
 
 extern struct gdtdesc     kgdt[GDTSIZE]; // GDT
-extern struct tss         default_tss;   // TSS
+extern struct s_tss       tss;           // TSS
 extern struct gdtr        kgdtr;         // GDTR
 
 void init_gdt_desc(uint32 base, uint32 limite, uint8 acces, uint8 other, struct gdtdesc *desc);
 void init_gdt(void);
-
+void tss_load(int tss);
 
 #endif

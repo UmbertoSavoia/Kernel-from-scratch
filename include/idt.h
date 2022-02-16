@@ -22,8 +22,6 @@ extern struct idtdesc   kidt[IDTSIZE];
 extern struct idtr      kidtr;
 
 void _asm_syscalls();
-void _asm_exception_general_protection_fault(void);
-void _asm_exception_page_fault(void);
 void _asm_schedule();
 void schedule();
 void do_syscalls(int num);

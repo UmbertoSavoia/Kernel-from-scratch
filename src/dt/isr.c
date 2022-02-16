@@ -1,7 +1,11 @@
 #include "../../include/kernel.h"
 #include "../../include/libc.h"
 
-void isr_schedule_int() {}
+void isr_clock()
+{
+    outb(0x20, 0x20);
+    //qui andrebbe la funzione per passare al prossimo task
+}
 
 void isr_keyboard()
 {
@@ -91,9 +95,11 @@ void isr_keyboard()
                 break;
             case 0x0e:
                 //= backspace press;
-                move_cursor(cursor.y, --cursor.x);
-                putchar(' ');
-                move_cursor(cursor.y, --cursor.x);
+                if (cursor.x > LEN_PROMPT) {
+                    move_cursor(cursor.y, --cursor.x);
+                    putchar(' ');
+                    move_cursor(cursor.y, --cursor.x);
+                }
                 break;
             case 0x0f:
                 //= tab press;

@@ -1,5 +1,6 @@
 #include "../include/kernel.h"
 #include "../include/libc.h"
+#include "../include/process.h"
 
 uint16          *vga_buffer = 0;
 int             vga_index = 0;
@@ -12,7 +13,7 @@ t_cursor        cursor_backup = {0};
 uint32          tmp_screen[BUF_SIZE] = {0};
 t_cursor        tmp_cursor = {0};
 struct gdtdesc  kgdt[GDTSIZE] = {0}; // GDT
-struct tss      default_tss;   // TSS
+struct s_tss    tss = {0};   // TSS
 struct gdtr     kgdtr;         // GDTR
 struct idtr     kidtr;         // IDTR
 struct idtdesc  kidt[IDTSIZE] = {0}; // IDT table
@@ -78,12 +79,14 @@ int     main(uint32 magic, uint32 *info)
 
     //print_header();
     printf("\n$> ");
-
     enable_interrupts();
 
-    /* Test syscall
-        asm("int $0x30");
-    */
+    /*t_process *process = 0;
+    int res = load_process((uint32 *)&program, 8, &process);
+    if (res == -1)
+        printf("errore");
+    else
+        run_task();*/
 
     while(1);
     return 0;

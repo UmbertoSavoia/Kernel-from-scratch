@@ -1,6 +1,13 @@
 #include "../../include/kernel.h"
 #include "../../include/libc.h"
 
+void init_tss(void)
+{
+    tss.esp0 = 0x600000;
+    tss.ss0 = KERNEL_DATA_SELECTOR;
+    tss_load(TSS_SELECTOR);
+}
+
 void init_gdt_desc(uint32 base, uint32 limite, uint8 acces, uint8 other, struct gdtdesc *desc)
 {
     desc->lim0_15 = (limite & 0xffff);
@@ -15,22 +22,17 @@ void init_gdt_desc(uint32 base, uint32 limite, uint8 acces, uint8 other, struct 
 
 void init_gdt(void)
 {
-    default_tss.debug_flag = 0x00;
-    default_tss.io_map = 0x00;
-    default_tss.esp0 = 0x1FFF0;
-    default_tss.ss0 = 0x18;
-
     // Inizializzo i segmenti
     init_gdt_desc(0x0, 0x0, 0x0, 0x0, &kgdt[0]);          // Segment null
-    init_gdt_desc(0x0, 0xFFFFF, 0x9B, 0x0D, &kgdt[1]);    // kernel code
-    init_gdt_desc(0x0, 0xFFFFF, 0x93, 0x0D, &kgdt[2]);    // kernel data
+    init_gdt_desc(0x0, 0xFFFFFFFF, 0x9B, 0x0D, &kgdt[1]);    // kernel code
+    init_gdt_desc(0x0, 0xFFFFFFFF, 0x93, 0x0D, &kgdt[2]);    // kernel data
     init_gdt_desc(0x0, 0x0, 0x97, 0x0D, &kgdt[3]);        // kernel stack
 
-    init_gdt_desc(0x0, 0xFFFFF, 0xFF, 0x0D, &kgdt[4]);    // user ucode
-    init_gdt_desc(0x0, 0xFFFFF, 0xF3, 0x0D, &kgdt[5]);    // user udata
+    init_gdt_desc(0x0, 0xFFFFFFFF, 0xFF, 0x0D, &kgdt[4]);    // user ucode
+    init_gdt_desc(0x0, 0xFFFFFFFF, 0xF3, 0x0D, &kgdt[5]);    // user udata
     init_gdt_desc(0x0, 0x0, 0xF7, 0x0D, &kgdt[6]);        // user ustack
 
-    init_gdt_desc((uint32) & default_tss, 0x67, 0xE9, 0x00, &kgdt[7]);    // descrittore del tss
+    init_gdt_desc((uint32)&tss, sizeof(tss), 0xE9, 0x00, &kgdt[7]);    // descrittore del tss
 
     // Inizializzo la struttura gdtr
     kgdtr.limite = GDTSIZE * 8;
@@ -51,4 +53,7 @@ void init_gdt(void)
             ljmp $0x08, $next   \n \
             next:               \n");
     printf("[ #2OK#15 ] #14GDT#15 : Inizializzato\n");
+
+    init_tss();
+    printf("[ #2OK#15 ] #14TSS#15 : Inizializzato\n");
 }

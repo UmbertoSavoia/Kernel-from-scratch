@@ -6,13 +6,6 @@ uint8 is_aligned(void *ptr)
     return ((uint32)ptr % HEAP_BLOCK_SIZE) == 0;
 }
 
-uint32 align_value(uint32 val)
-{
-    if (!(val % HEAP_BLOCK_SIZE))
-        return val;
-    return ((val - (val % HEAP_BLOCK_SIZE)) + HEAP_BLOCK_SIZE);
-}
-
 uint32 heap_get_index_from_addr(heap *heap, void *addr)
 {
     return ((uint32)(addr - heap->start_addr)) / HEAP_BLOCK_SIZE;
@@ -53,7 +46,7 @@ int heap_get_index_start_block(heap *heap, uint32 total_block)
 
 void *heap_malloc(heap *heap, uint32 size)
 {
-    uint32 total_block = align_value(size) / HEAP_BLOCK_SIZE;
+    uint32 total_block = align_value(size, HEAP_BLOCK_SIZE) / HEAP_BLOCK_SIZE;
     void *addr = 0;
     int start = 0;
     uint8 flag = 0;

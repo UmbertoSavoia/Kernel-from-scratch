@@ -1,4 +1,4 @@
-extern isr_handler, do_syscalls, isr_schedule_int, isr_general_protection_fault_exception, isr_page_fault_exception, exception_handler
+extern isr_handler, do_syscalls, isr_clock, isr_general_protection_fault_exception, isr_page_fault_exception, exception_handler
 
 %macro  SAVE_REGS 0
     pushad
@@ -47,7 +47,7 @@ _asm_exception_%1:
     iret
 %endmacro
 
-global _asm_syscalls, _asm_exception_general_protection_fault, _asm_exception_page_fault
+global _asm_syscalls
 _asm_syscalls:
     SAVE_REGS
     push eax      ; trasmissione del numero di chiamata
@@ -61,7 +61,7 @@ _asm_syscalls:
 global _asm_schedule
 _asm_schedule:
     SAVE_REGS
-    call isr_schedule_int
+    call isr_clock
     mov al,0x20
     out 0x20,al
     RESTORE_REGS
@@ -75,6 +75,15 @@ enable_interrupts:
 global disable_interrupts
 disable_interrupts:
     cli
+    ret
+
+global tss_load
+tss_load:
+    push ebp
+    mov ebp, esp
+    mov ax, [ebp+8] ; TSS Segment
+    ltr ax
+    pop ebp
     ret
 
 INTERRUPT_IRQ 1
