@@ -34,7 +34,7 @@ void switch_paging(uint32 *directory)
     current_page_directory = directory;
 }
 
-int get_indexes_paging(uint32 *vaddr, uint32 *index_directory, uint32 *index_table)
+int get_indexes_paging(void *vaddr, uint32 *index_directory, uint32 *index_table)
 {
     if ((uint32)vaddr % PAGING_PAGE_SIZE)
         return -1;
@@ -43,16 +43,18 @@ int get_indexes_paging(uint32 *vaddr, uint32 *index_directory, uint32 *index_tab
     return 0;
 }
 
-int map_page_directory_to(uint32 *page_directory, uint32 *vaddr, uint32 *paddr, uint32 *paddr_end, int flags)
+int map_page_directory_to(uint32 *page_directory, void *vaddr, void *paddr, void *paddr_end, int flags)
 {
     uint32 directory_index = 0, table_index = 0, entry = 0;
     uint32 *table = 0;
+    uint32 bytes = (uint32)paddr_end - (uint32)paddr;
+    int count =  bytes / PAGING_PAGE_SIZE;
 
     if (((uint32)vaddr % PAGING_PAGE_SIZE) || ((uint32)paddr % PAGING_PAGE_SIZE)
     || ((uint32)paddr_end % PAGING_PAGE_SIZE) || ((uint32)paddr_end < (uint32)paddr))
         return -1;
 
-    for (int i = 0; i <= ((paddr_end - paddr) / PAGING_PAGE_SIZE);
+    for (int i = 0; i < count;
         ++i, vaddr += PAGING_PAGE_SIZE, paddr += PAGING_PAGE_SIZE) {
         directory_index = 0;
         table_index = 0;

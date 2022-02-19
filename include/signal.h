@@ -1,6 +1,8 @@
 #ifndef SIGNAL_H
 #define SIGNAL_H
 
+#include "process.h"
+
 #define SIGHUP        1          // Hangup detected on controlling terminal or death of controlling process
 #define SIGINT        2          // Interrupt from keyboard
 #define SIGQUIT       3          // Quit from keyboard
@@ -32,5 +34,13 @@
 #define SIGIO        29          // I/O now possible (4.2BSD)
 #define SIGPWR       30          // Power failure (System V)
 #define SIGSYS       31          // Bad system call (SVr4)
+
+#define SIG_ERR (void (*)())-1
+#define SIG_DFL (void (*)())0
+#define SIG_IGN (void (*)())1
+
+typedef void (*sighandler_t)(int);
+int push_back_queue_signal(t_process *process, int signum, sighandler_t handler);
+void exec_process_signal(t_process *process);
 
 #endif

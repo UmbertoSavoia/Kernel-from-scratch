@@ -24,7 +24,6 @@ extern struct idtr      kidtr;
 void _asm_syscalls();
 void _asm_schedule();
 void schedule();
-void do_syscalls(int num);
 void init_idt_desc(uint16 select, uint32 offset, uint16 type, struct idtdesc *desc);
 void init_idt(void);
 void init_pic(void);

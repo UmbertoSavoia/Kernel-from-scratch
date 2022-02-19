@@ -44,6 +44,7 @@ extern heap_table   kheap_table;
 int  init_memory(void);
 void *kmalloc(uint32 size);
 void kfree(void *ptr);
+void kfree_multi(int argc, ...);
 void *kcalloc(uint32 size);
 uint32 get_size_addr(void *addr);
 uint32 align_value(uint32 val, uint32 align_at);
@@ -76,6 +77,7 @@ void enable_paging(void);
 uint32 *new_page_directory(uint8 flags);
 void free_page_directory(uint32 *page_directory);
 void switch_paging(uint32 *directory);
-int map_page_directory_to(uint32 *page_directory, uint32 *vaddr, uint32 *paddr, uint32 *paddr_end, int flags);
+int get_indexes_paging(void *vaddr, uint32 *index_directory, uint32 *index_table);
+int map_page_directory_to(uint32 *page_directory, void *vaddr, void *paddr, void *paddr_end, int flags);
 
 #endif

@@ -42,6 +42,12 @@ void    panic(const char *msg)
     while (1);
 }
 
+void set_kernel_page(void)
+{
+    set_kernel_data_segment();
+    switch_paging(kpage_directory);
+}
+
 int     main(uint32 magic, uint32 *info)
 {
     if (magic != 0x2BADB002)
@@ -78,15 +84,15 @@ int     main(uint32 magic, uint32 *info)
     }
 
     //print_header();
-    printf("\n$> ");
-    enable_interrupts();
+   /* printf("\n$> ");
+    enable_interrupts();*/
 
-    /*t_process *process = 0;
-    int res = load_process((uint32 *)&program, 8, &process);
+    t_process *process = 0;
+    int res = load_process((uint32 *)&program, 32, &process);
     if (res == -1)
         printf("errore");
     else
-        run_task();*/
+        run_task();
 
     while(1);
     return 0;

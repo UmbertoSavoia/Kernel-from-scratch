@@ -32,6 +32,19 @@ void kfree(void *ptr)
     heap_free(&kheap, ptr);
 }
 
+void kfree_multi(int argc, ...)
+{
+    va_list ap;
+    va_start(ap, argc);
+    uint32 *ptr = 0;
+
+    while (argc) {
+        ptr = va_arg(ap, uint32*);
+        kfree(ptr);
+        argc--;
+    }
+}
+
 void *kcalloc(uint32 size)
 {
     void *ret = 0;

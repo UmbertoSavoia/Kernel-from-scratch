@@ -1,4 +1,4 @@
-extern isr_handler, do_syscalls, isr_clock, isr_general_protection_fault_exception, isr_page_fault_exception, exception_handler
+extern isr_handler, syscalls_handler, isr_clock, isr_general_protection_fault_exception, isr_page_fault_exception, exception_handler
 
 %macro  SAVE_REGS 0
     pushad
@@ -49,14 +49,17 @@ _asm_exception_%1:
 
 global _asm_syscalls
 _asm_syscalls:
-    SAVE_REGS
-    push eax      ; trasmissione del numero di chiamata
-    call do_syscalls
-    pop eax
     cli
-    sti
-    RESTORE_REGS
-    iret
+    pushad
+    push esp    ; stack frame
+    push eax    ; numero syscall
+    call syscalls_handler
+    mov dword[res], eax
+    pop ebx
+    pop ebx
+    popad
+    mov eax, [res]
+    iretd
 
 global _asm_schedule
 _asm_schedule:
@@ -109,3 +112,6 @@ INTERRUPT_EXCEPTION 16
 INTERRUPT_EXCEPTION 17
 INTERRUPT_EXCEPTION 18
 INTERRUPT_EXCEPTION 19
+
+section .data
+    res: dd 0

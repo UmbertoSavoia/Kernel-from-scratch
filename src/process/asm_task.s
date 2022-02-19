@@ -43,3 +43,12 @@ set_user_data_segment:
     mov fs, ax
     mov gs, ax
     ret
+
+global set_kernel_data_segment
+set_kernel_data_segment:
+    mov ax, (8 * 2)
+    mov ds, ax
+    mov es, ax
+    mov gs, ax
+    mov fs, ax
+    ret

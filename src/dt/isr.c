@@ -1,10 +1,12 @@
 #include "../../include/kernel.h"
 #include "../../include/libc.h"
+#include "../../include/task.h"
 
 void isr_clock()
 {
     outb(0x20, 0x20);
     //qui andrebbe la funzione per passare al prossimo task
+    next_task();
 }
 
 void isr_keyboard()

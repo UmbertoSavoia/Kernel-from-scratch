@@ -3,11 +3,6 @@
 
 void schedule() {}
 
-void do_syscalls(int num)
-{
-    printf("Syscall: %d\n", num);
-}
-
 void init_idt_desc(uint16 select, uint32 offset, uint16 type, struct idtdesc *desc)
 {
     desc->offset0_15 = (offset & 0xffff);

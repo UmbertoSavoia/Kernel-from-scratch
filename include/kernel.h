@@ -29,6 +29,7 @@ void program(void);
 void    shutdown(void);
 void    reboot(void);
 void    panic(const char *msg);
+void    set_kernel_page(void);
 
 void disable_interrupts();
 void enable_interrupts();

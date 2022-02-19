@@ -4,7 +4,7 @@
 #include "kernel.h"
 #include "process.h"
 
-#define PROCESS_STACK_SIZE          1024 * 16
+#define PROCESS_STACK_SIZE          0x4000
 #define PROCESS_VIRTUAL_STACK_START 0x3FF000
 #define PROCESS_VIRTUAL_STACK_END   PROCESS_VIRTUAL_STACK_START - PROCESS_STACK_SIZE
 
@@ -35,6 +35,8 @@ typedef struct  s_task
     struct s_task   *next;
 }               t_task;
 
+extern t_task *task_current;
+
 t_task *new_task(t_process *process);
 void remove_from_list_task(t_task *task);
 int init_task(t_task *task, t_process *process);
@@ -42,10 +44,14 @@ void switch_task(t_task *task);
 void next_task(void);
 void switch_task_page_directory(void);
 void run_task(void);
+void set_current_page_task(void);
+void *get_arg_from_item_stack_task(t_task *task, int index);
+void task_save_state(t_task *task, interrupt_frame *frame);
 
 // ASM
 void enter_userland(t_registers *regs);
 void restore_registers(t_registers *regs);
 void set_user_data_segment(void);
+void set_kernel_data_segment(void);
 
 #endif

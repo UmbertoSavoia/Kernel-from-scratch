@@ -1,22 +1,7 @@
 #ifndef ISR_H
 #define ISR_H
 
-struct s_interrupt_frame
-{
-    uint32 edi;
-    uint32 esi;
-    uint32 ebp;
-    uint32 reserved;
-    uint32 ebx;
-    uint32 edx;
-    uint32 ecx;
-    uint32 eax;
-    uint32 ip;
-    uint32 cs;
-    uint32 flags;
-    uint32 esp;
-    uint32 ss;
-} __attribute__((packed));
+#include "syscalls.h"
 typedef struct s_interrupt_frame interrupt_frame;
 
 // IRQ - Interrupt Request

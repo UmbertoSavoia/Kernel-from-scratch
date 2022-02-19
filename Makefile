@@ -48,6 +48,7 @@ run:
 	/mnt/c/Program\ Files/qemu/qemu-system-i386.exe -cdrom "C:\Users\umber\Desktop\kfs.iso"
 
 debug:
+	yes | cp -iv kfs.iso /mnt/c/Users/umber/Desktop/.
 	gdb -q -x debug.gdb
 
 .PHONY: all clean fclean re
