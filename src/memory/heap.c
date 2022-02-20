@@ -71,6 +71,8 @@ void *heap_malloc(heap *heap, uint32 size)
 
 void heap_free(heap *heap, void *ptr)
 {
+    if (!ptr)
+        return ;
     uint32 start = ((uint32)(ptr - heap->start_addr)) / HEAP_BLOCK_SIZE;
 
     for (uint32 i = start; i < heap->table->size; ++i) {

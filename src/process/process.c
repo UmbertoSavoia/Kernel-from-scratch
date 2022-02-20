@@ -61,6 +61,34 @@ int load_process(uint32 *addr, uint32 size, t_process **process)
         kfree_multi(3, (*process)->stack_ptr, (*process)->memory_ptr, *process);
         return -1;
     }
+    if (!((*process)->bss_ptr = kmalloc(PAGING_PAGE_SIZE))) {
+        remove_from_list_task((*process)->task);
+        kfree_multi(3, (*process)->stack_ptr, (*process)->memory_ptr, *process);
+    }
+    if (!((*process)->data_section_ptr = kmalloc(PAGING_PAGE_SIZE))) {
+        remove_from_list_task((*process)->task);
+        kfree_multi(4, (*process)->stack_ptr, (*process)->memory_ptr, (*process)->bss_ptr, *process);
+    }
+    uint32 vaddr_bss_start = align_value((*process)->entry + (*process)->size_memory, PAGING_PAGE_SIZE);
+    uint32 vaddr_data_start = align_value(vaddr_bss_start + PAGING_PAGE_SIZE, PAGING_PAGE_SIZE);
+    if (map_page_directory_to((*process)->task->page_directory,
+                              (void *)vaddr_bss_start,
+                              (void *)(*process)->bss_ptr,
+                              (void *) align_value((uint32)(*process)->bss_ptr + PAGING_PAGE_SIZE, PAGING_PAGE_SIZE),
+                              PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL | PAGING_IS_WRITEABLE) == -1) {
+        remove_from_list_task((*process)->task);
+        kfree_multi(5, (*process)->stack_ptr, (*process)->memory_ptr, *process, (*process)->bss_ptr, (*process)->data_section_ptr);
+        return -1;
+    }
+    if (map_page_directory_to((*process)->task->page_directory,
+                              (void *)vaddr_data_start,
+                              (void *)(*process)->data_section_ptr,
+                              (void *) align_value((uint32)(*process)->data_section_ptr + PAGING_PAGE_SIZE, PAGING_PAGE_SIZE),
+                              PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL | PAGING_IS_WRITEABLE) == -1) {
+        remove_from_list_task((*process)->task);
+        kfree_multi(5, (*process)->stack_ptr, (*process)->memory_ptr, *process, (*process)->bss_ptr, (*process)->data_section_ptr);
+        return -1;
+    }
     processes[slot] = *process;
     return 0;
 }
@@ -77,7 +105,7 @@ int terminate_process(t_process *process)
         process->heap_process[i].size = 0;
         kfree(process->heap_process[i].ptr);
     }
-    kfree_multi(2, process->memory_ptr, process->stack_ptr);
+    kfree_multi(4, process->memory_ptr, process->stack_ptr, process->bss_ptr, process->data_section_ptr);
     remove_from_list_task(process->task);
     processes[process->pid] = 0;
     for (uint32 i = 0; i < MAX_PROCESSES; ++i) {

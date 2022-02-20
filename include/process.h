@@ -46,7 +46,10 @@ typedef struct  s_process
     void                *memory_ptr;
     uint32              size_memory;
     void                *stack_ptr;
+    void                *bss_ptr;
+    void                *data_section_ptr;
     t_signal            *signals[MAX_QUEUE_SIGNALS];
+    char                buffer[4096];
     uint32              entry;
     struct s_process    *father;
     struct s_process    *children[MAX_CHILDREN_PROCESS];

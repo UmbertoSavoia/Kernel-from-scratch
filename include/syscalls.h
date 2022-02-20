@@ -1,7 +1,7 @@
 #ifndef SYSCALLS_H
 #define SYSCALLS_H
 
-#define MAX_SYSCALLS 8
+#define MAX_SYSCALLS 9
 
 #include "kernel.h"
 
@@ -30,6 +30,7 @@ void *getuid_syscall(interrupt_frame *frame);
 void *signal_syscall(interrupt_frame *frame);
 void *kill_syscall(interrupt_frame *frame);
 void *write_syscall(interrupt_frame *frame);
+void *mmap(interrupt_frame *frame);
 void *syscalls_handler(int num, interrupt_frame *frame);
 
 typedef void* (*t_syscall)(interrupt_frame *frame);

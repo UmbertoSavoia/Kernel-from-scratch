@@ -5,8 +5,7 @@
 void isr_clock()
 {
     outb(0x20, 0x20);
-    //qui andrebbe la funzione per passare al prossimo task
-    next_task();
+    //next_task();
 }
 
 void isr_keyboard()

@@ -13,6 +13,7 @@ t_syscall syscall_cmd[MAX_SYSCALLS] = {
         &signal_syscall,
         &kill_syscall,
         &write_syscall,
+        &mmap
 };
 
 void *fork_syscall(interrupt_frame *frame)
@@ -164,6 +165,12 @@ void *write_syscall(interrupt_frame *frame)
     printf("%s", tmp);
     kfree(tmp);
     return (void *)size;
+}
+
+void *mmap(interrupt_frame *frame)
+{
+    (void)frame;
+    return (void *)task_current->process->entry;
 }
 
 void *syscalls_handler(int num, interrupt_frame *frame)

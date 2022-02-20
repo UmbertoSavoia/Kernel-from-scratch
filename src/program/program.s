@@ -3,8 +3,8 @@
 global program
 program:
     ;getuid
-    ;mov eax, 4
-    ;int 0x80
+    mov eax, 4
+    int 0x80
 
     ;exit
     ;mov ebx, 99
@@ -19,10 +19,10 @@ program:
     ;int 0x80
 
     ;write
-    push 15
-    push str
-    mov eax, 7
-    int 0x80
+    ;push 15
+    ;push str
+    ;mov eax, 7
+    ;int 0x80
 loop:
     jmp loop
 
